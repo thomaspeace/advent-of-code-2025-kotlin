@@ -30,15 +30,25 @@ class Safe() {
     }
 
     fun turnDial(direction: Char, magnitude: Int): Unit {
-        val magnitudeMod: Int = magnitude % 100
-        if (direction == 'R') currentPos += magnitudeMod else currentPos -= magnitudeMod
+        var currentMag: Int = magnitude
+        while (currentMag > 0) {
+            if (direction == 'R') {
+                currentPos += 1
+                currentMag -= 1
+                if (currentPos % 100 == 0) clicksHeard += 1
+            } else {
+                currentPos -= 1
+                currentMag -= 1
+                if (currentPos % 100 == 0) clicksHeard += 1
+                checkDial()
+            }
+        }
         checkDial()
     }
 
     fun checkDial(): Unit {
         if (currentPos < 0) currentPos += 100
         if (currentPos >= 100) currentPos -= 100
-        if (currentPos == 0) clicksHeard += 1
     }
 
     fun getResult(): Int {
